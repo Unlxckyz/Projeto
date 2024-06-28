@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="style.css">
+    <title>Sinister</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ol id="menu">
+                <li id="camisetas" class="menu-item">Camisetas</li>
+                <li id="blusas-jaquetas" class="menu-item">Blusas & Jaquetas</li>
+                <li id="headwear" class="menu-item">Headwear</li>
+                <img id="logo" src="./assets/others/logo.png" alt="">
+                <li id="calcas-shorts" class="menu-item">Calças & Shorts</li>
+                <li id="camisas" class="menu-item">Camisas</li>
+                <li id="suporte" class="menu-item">Suporte</li>
+                <li style="border: none; color: crimson;">
+                    <span class="material-symbols-outlined menu-item">
+                        shopping_cart
+                        </span>
+                        
+
+                </li>
+                    <div id="rodapeFixo">
+                        <label for="">Total:</label>
+                        <input type="text" value="R$0,00" id="total" readonly>
+                        <button id="finalizar-compra">Finalizar</button>
+                        <button id="limpar">Limpar</button>
+                    </div>
+            </ol>
+        </nav>
+    </header>
+    
+   <main>
+    <div id="box-1">
+        <div class="support">
+            <img src="suporte.png" id="suporte-img" alt="" srcset="">
+            <div id="divEmail">
+            <h1>Tem alguma dúvida ou precisa de assistência?</h1>
+            <h3>Não se preocupe.</h3>
+            <p>Estamos aqui para ajudar! Caso tenha qualquer dúvida ou necessite de assistência, entre em contato conosco.</p>
+            <br>
+            <p>Por favor, insira seu e-mail abaixo para que possamos entrar em contato com você o mais breve possível.</p>
+            <div class="email">
+    
+            <input class="email-input" type="text" placeholder="Insira seu email...">
+            <button class="btnEmail">Enviar</button>
+
+            </div>
+            
+        </div> 
+        
+    </div>
+    
+
+   </main>
+   <div id="popup" class="popup">
+    <div class="popup-content">
+        <p class="mostraTotal"></p>
+        <button id="popup-ok">OK</button>
+    </div>
+</div>
+<div id="overlay" class="overlay"></div>
+ 
+    <script src="./scripts/script.js"></script>
+</body>
+</html>
