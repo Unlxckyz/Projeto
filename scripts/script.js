@@ -1,7 +1,5 @@
-// script/script.js
-let valor = 0;
 
-// Função para atualizar os produtos
+let valor = 0;
 function updateProducts(newProducts) {
     document.getElementById('box-1').innerHTML = newProducts;
     const imagemDoProduto = document.querySelectorAll('.product img');
@@ -30,20 +28,72 @@ function updateProducts(newProducts) {
     }
 
     
+    let valor = 0; // Initialize the valor variable
+
     botaoAd.forEach(function(botao) {
         botao.addEventListener('click', function() {
-            let valorTexto = botao.parentElement.querySelector('.preco').textContent;
+            let parent = botao.closest('.product');
+            let imagemProduct = parent.querySelector('img').src;
+            let textoProduto = parent.querySelector('h3').textContent;
+            let valorTexto = parent.querySelector('.preco').textContent;
+            let carrinho = document.getElementById('produtos-carrinho');
             let preco = extraiValor(valorTexto);
-
+            
             if (!isNaN(preco)) {
+                let qtd = 1;
+                let exists = false;
+                let carrinhoProdutos = carrinho.querySelectorAll('.linha-produto');
+                
+                carrinhoProdutos.forEach(function(produto) {
+                    if (produto.textContent.includes(textoProduto)) {
+                        // If product exists, update the quantity
+                        let span = produto.querySelector('span');
+                        let currentQty = parseInt(span.textContent.match(/x(\d+)/)[1]);
+                        currentQty++;
+                        span.textContent = `${formataTexto(preco)} x${currentQty}`;
+                        exists = true;
+                    }
+                });
+    
+                if (!exists) {
+                    // Add new product to the cart
+                    carrinho.innerHTML += `
+                        <div class="linha-produto">
+                            <img src="${imagemProduct}" alt="${textoProduto}">
+                            ${textoProduto} <span>${formataTexto(preco)} x${qtd}</span>
+                        </div>`;
+                }
+                
+                // Update total value
                 valor += preco;
                 total.value = formataTexto(valor);
             } else {
                 console.log('Preço inválido');
             }
+          
+            
         });
     });
-  
+    let carrinho = document.getElementById('carrinho');
+    let carrinhoOpen = false;
+    
+    document.getElementById('meuCarrinho').addEventListener('mouseover', function () {
+        carrinho.style.display = 'flex';
+        setTimeout(() => carrinho.classList.add('show'), 10);
+        carrinhoOpen = true;
+    });
+    
+    carrinho.addEventListener('mouseleave', function () {
+        if (carrinhoOpen) {
+            carrinho.classList.remove('show');
+            setTimeout(() => {
+                carrinho.style.display = 'none';
+                document.body.style = ``;
+            }, 300);
+            carrinhoOpen = false;
+        }
+    });
+    
    
         document.getElementById('limpar').addEventListener('click',function(){
             valor = 0;
@@ -76,13 +126,70 @@ function updateProducts(newProducts) {
     }
     
     
+    
     function hidePopup() {
         popup.style.display = 'none';
         overlay.style.display = 'none';
         valor = 0;
         total.value = formataTexto(valor);
     }
-   
+    //menu-mobile
+    let box = document.getElementById('box-1');
+    let divMenu = document.createElement('div');
+    box.appendChild(divMenu);
+    divMenu.classList.add('menu-mobile-items');
+    divMenu.innerHTML = `
+        <span class="material-symbols-outlined" id="menu-close">close</span>
+        <li id="camisetas-mobile" class="menu-item">Camisetas</li>
+        <li id="blusas-jaquetas-mobile" class="menu-item">Blusas & Jaquetas</li>
+        <li id="headwear-mobile" class="menu-item">Headwear</li>
+        <li id="calcas-shorts-mobile" class="menu-item">Calças & Shorts</li>
+        <li id="camisas-mobile" class="menu-item">Camisas</li>
+        <li id="suporte-mobile" class="menu-item">Suporte</li>
+        <li style="border: none; color: crimson;"></li>
+    `;
+    
+    divMenu.style.display = 'none';
+
+document.getElementById('menu-mobile').addEventListener('click', function() {
+    divMenu.style.display = 'flex';
+    document.body.style = `overflow: hidden;`;
+    setTimeout(() => divMenu.classList.add('show'), 10);
+    
+    document.getElementById('menu-close').addEventListener("click", function() {
+        divMenu.classList.remove('show');
+        setTimeout(() => {
+            divMenu.style.display = 'none';
+            document.body.style = ``;
+        }, 300);
+    });
+
+    document.getElementById('camisetas-mobile').addEventListener('click', function() {
+        updateProducts(products['camisetas']);
+    });
+
+    document.getElementById('blusas-jaquetas-mobile').addEventListener('click', function() {
+        updateProducts(products['blusas-jaquetas']);
+    });
+
+    document.getElementById('headwear-mobile').addEventListener('click', function() {
+        updateProducts(products['headwear']);
+    });
+
+    document.getElementById('calcas-shorts-mobile').addEventListener('click', function() {
+        updateProducts(products['calcas-shorts']);
+    });
+
+    document.getElementById('camisas-mobile').addEventListener('click', function() {
+        updateProducts(products['camisas']);
+    });
+
+    document.getElementById('suporte-mobile').addEventListener('click', function() {
+        updateProducts(products['suporte']);
+    });
+});
+
+
     
     
     document.getElementById('finalizar-compra').addEventListener('click', showPopup);
@@ -94,28 +201,7 @@ function updateProducts(newProducts) {
 
   
     
-    let btn = document.querySelector('.btnEmail');
-    btn.addEventListener('click', function() {
-        let email = document.querySelector('.email-input').value;
-       ;
     
-        if (email.length <= 0 || email.indexOf('@') === -1 || !email.endsWith('.com')) {
-            mostraTotalFinal.innerHTML = `<h2>Email Inválido </h2>`;
-            popup.style.display = 'block'
-            overlay.style.display = 'block';
-        } else {
-            // Mostrar popup com sucesso
-            mostraTotalFinal.innerHTML = `<h2>Email enviado com sucesso!</h2> <p> Numero do Ticket:
-            ${randomMico()} 💀 </p>`;
-            popup.style.display = 'block';
-            overlay.style.display = 'block';
-        }
-    });
-    function randomMico(){
-        let numeroGerado = Math.floor(Math.random()*98798);
-        return numeroGerado;
-    }
-       
     
 
 
@@ -123,8 +209,6 @@ function updateProducts(newProducts) {
     
 }
 
-
-// Produtos para cada categoria
 const products = {
     'camisetas': `
         <div class="product">
@@ -469,7 +553,7 @@ const products = {
     `
 };
 
-// Adiciona eventos de clique para cada item do menu
+
 document.getElementById('camisetas').addEventListener('click', function() {
     updateProducts(products['camisetas']);
      
@@ -500,9 +584,15 @@ document.getElementById('suporte').addEventListener('click', function() {
      
      
 });
+
 document.addEventListener('DOMContentLoaded',function(){
     
+    
+    updateProducts(products['suporte']);
+    updateProducts(products['camisas']);
+    updateProducts(products['calcas-shorts']);
+    updateProducts(products['headwear']);
+    updateProducts(products['blusas-jaquetas']);
     updateProducts(products['camisetas']);
-
     
 });
